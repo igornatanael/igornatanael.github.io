@@ -230,7 +230,7 @@ function rearVals(st) {
     const pick = (key, cur, map) => Object.keys(map).map((k) => ({ label: map[k], aria: map[k], on: k === cur, pick: () => this.setState({ [key]: k }), style: chip(k === cur) }));
     const cols = (key, cur, list) => list.map((v) => ({ label: '', aria: v, on: v === cur, pick: () => this.setState({ [key]: v }), style: dot(v, v === cur) }));
     const vao = st.vao || 'gourmet', svc = st.svc || 'com', red = st.red || 'sem', gd = st.gd || 'cobogo', gc = st.gc || 'redondo', wn = st.wnR || 'ripado';
-    const sub = st.sub || 'reboco', ter = st.ter || 'reboco', sup = st.sup || 'tijolo';
+    const sub = st.sub || 'reboco', ter = st.ter || 'reboco', sup = st.sup || 'reboco';
     const pl = st.pl || '#F1EDE6', wd = st.wd || '#8B5A33', rf = st.rf || '#8B5A33', cc = st.cc || '#C9774A';
     const FIN = { reboco: 'Reboco', tijolo: 'Tijolinho', pedra: 'Pedra bruta', concreto: 'Concreto' };
     const on = (b) => (b ? 'inline' : 'none');
@@ -594,7 +594,7 @@ const Casa3D = (() => {
     // 1º pavimento: o quarto 2 avança até y 16 (x 1,5–4,5); o resto termina em y 14,55
     prism(4.5, 8, 2, 3.6, U, P.reboco); prism(1.5, 8, 3.6, 14.55, U, P.reboco); prism(1.5, 4.5, 14.55, 16, U, P.reboco);
     box(1.5, 1.7, 2, 2.2, U, top(1.5), P.reboco);
-    face('rear', 4.5, 8, U, 0, finRear(v('sup', 'tijolo')), 0.01, (u) => top(u));
+    face('rear', 4.5, 8, U, 0, finRear(v('sup', 'reboco')), 0.01, (u) => top(u));
     face('front', 1.5, 4.5, U, 0, finFront[v('bf', 'Pedra caco')] || finFront['Tijolinho'], 0.01, (u) => top(u));
     // janela do quarto da frente
     const wn = v('wn', 'correr');
@@ -1462,7 +1462,7 @@ const Interior = (() => {
       ['Volume da esquerda · cor', 'bc', '#E8E2D6', C(['#B0603C', '#C98B63', '#E8E2D6', '#8E8A82', '#6B5545', '#9C8F7C', '#C2B8A6'])],
       ['Subsolo (fundos)', 'sub', 'reboco', FIN],
       ['Térreo (fundos)', 'ter', 'reboco', FIN],
-      ['1º pavimento (fundos)', 'sup', 'tijolo', FIN],
+      ['1º pavimento (fundos)', 'sup', 'reboco', FIN],
       ['Pintura', 'pl', '#F1EDE6', C(['#F1EDE6', '#F5F5F2', '#E6D8C3', '#D9DDD8', '#E4E8DA'])],
       ['Madeiras', 'wd', '#8B5A33', C(['#8B5A33', '#A87444', '#6B4428', '#B98B5E'])],
       ['Telhado · cor', 'rf', '#8B5A33', C(['#8B5A33', '#6B4428', '#7A6A58', '#5E5A52', '#A87444'])],
