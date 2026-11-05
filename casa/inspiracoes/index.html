@@ -98,6 +98,9 @@ p{margin:0}
 .ref li{font-size:16px;line-height:1.55;padding-left:18px;position:relative}
 .ref li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:7px;border-radius:2px;background:var(--clay);transform:rotate(45deg)}
 .ref li b{font-weight:600}
+.pin-embed{border-top:1px solid var(--rule);padding-top:16px;min-height:120px;overflow:hidden}
+.pin-embed > span{max-width:100%!important}
+.pin-embed a{font-family:var(--f-mono);font-size:13px;color:var(--ink-2)}
 .pin{font-family:var(--f-mono);font-size:12px;color:var(--ink-2);white-space:nowrap}
 
 /* croqui */
@@ -266,6 +269,7 @@ footer{padding-block:32px 48px;font-family:var(--f-mono);font-size:12.5px;color:
           <li><b>Porta de madeira simples,</b> com cara de casa. Nada de porta monumental, e pouco vidro voltado para a rua.</li>
           <li><b>Muito verde.</b> Árvores, jardim e plantas pendentes nas floreiras e na cobertura da garagem. Piso da entrada drenante, com grama no intertravado. <span class="pin">F2 · F6</span></li>
         </ul>
+        <div class="pin-embed"><a data-pin-do="embedBoard" data-pin-scale-height="300" data-pin-scale-width="90" href="https://www.pinterest.com/igornatanael/fachada-casa/">Ver a pasta no Pinterest</a></div>
       </article>
       <article class="ref">
         <div class="ref-top"><h3>Sala</h3><a href="https://br.pinterest.com/igornatanael/sala/" target="_blank" rel="noopener">8 pins ↗</a></div>
@@ -276,6 +280,7 @@ footer{padding-block:32px 48px;font-family:var(--f-mono);font-size:12.5px;color:
           <li><b>Aberturas que se abrem por inteiro,</b> de correr ou camarão, ligando a sala ao lado de fora. <span class="pin">S4</span></li>
           <li><b>Luz quente e indireta,</b> tons neutros com madeira e plantas.</li>
         </ul>
+        <div class="pin-embed"><a data-pin-do="embedBoard" data-pin-scale-height="300" data-pin-scale-width="90" href="https://www.pinterest.com/igornatanael/sala/">Ver a pasta no Pinterest</a></div>
       </article>
       <article class="ref">
         <div class="ref-top"><h3>Cozinha</h3><a href="https://pin.it/62oZHQFgE" target="_blank" rel="noopener">18 pins ↗</a></div>
@@ -286,6 +291,7 @@ footer{padding-block:32px 48px;font-family:var(--f-mono);font-size:12.5px;color:
           <li><b>Armário suspenso sobre a ilha,</b> para plantas, louça e alguns eletrodomésticos. <span class="pin">C9 · C10 · C11 · C16 · C18</span></li>
           <li><b>O máximo de armário e de bancada.</b> Tenho air fryer, panela de pressão elétrica, micro-ondas, lava-louça, forno, cafeteira e bebedouro.</li>
         </ul>
+        <div class="pin-embed"><a data-pin-do="embedBoard" data-pin-scale-height="300" data-pin-scale-width="90" href="https://www.pinterest.com/igornatanael/cozinha/">Ver a pasta no Pinterest</a></div>
       </article>
       <article class="ref">
         <div class="ref-top"><h3>Área gourmet do subsolo</h3><a href="https://pin.it/2MBzpURYk" target="_blank" rel="noopener">5 pins ↗</a></div>
@@ -294,6 +300,7 @@ footer{padding-block:32px 48px;font-family:var(--f-mono);font-size:12.5px;color:
           <li><b>Cobertura leve com luz filtrada,</b> como pergolado ou ripado, que também possa sustentar as redes do redário. <span class="pin">G1 · G2</span></li>
           <li><b>Junto das salas de trabalho e do banheiro de apoio.</b> Pode começar só como vão livre, conforme o orçamento.</li>
         </ul>
+        <div class="pin-embed"><a data-pin-do="embedBoard" data-pin-scale-height="300" data-pin-scale-width="90" href="https://www.pinterest.com/igornatanael/%C3%A1rea-gourmet/">Ver a pasta no Pinterest</a></div>
       </article>
     </div>
   </div>
@@ -372,4 +379,8 @@ footer{padding-block:32px 48px;font-family:var(--f-mono);font-size:12.5px;color:
 </section>
 
 <footer class="in">Igor Natanael · Casa Skyville, Lote 17, Quadra 18 · novembro de 2026</footer>
+<script>
+(function(){document.querySelectorAll('.pin-embed a[data-pin-do]').forEach(function(a){var w=a.parentNode.clientWidth||400;a.setAttribute('data-pin-board-width',String(Math.max(240,Math.floor(w))));});
+var s=document.createElement('script');s.async=true;s.src='https://assets.pinterest.com/js/pinit.js';document.body.appendChild(s);})();
+</script>
 </body></html>
