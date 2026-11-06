@@ -1,58 +1,322 @@
 <!doctype html>
-<html lang="pt-BR">
-<head><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="icon" href="/favicon.png" type="image/png"><link rel="apple-touch-icon" href="/favicon.png">
+<html lang="en">
+<head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Igor Natanael</title>
+<meta name="description" content="Igor Natanael — software engineer from Paraíba, Brazil. Platforms, infrastructure, fintech and a bit of research.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="icon" href="/favicon.png" type="image/png"><link rel="apple-touch-icon" href="/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shrikhand&family=Silkscreen:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap">
 <style>
-:root{--bg:#F4EFE8;--ink:#22261F;--ink-2:#646457;--clay:#B6542F;--mortar:#E2D9CC}
-@media (prefers-color-scheme:dark){:root{--bg:#171511;--ink:#EDE7DC;--ink-2:#A7A091;--clay:#E07E55;--mortar:#353027}}
+/* Layout: plasma pixelado e derretido no fundo (canvas em baixa resolução); por cima, adesivos sólidos com sombra dura, numa coluna só */
+:root{
+  --void:#14081F; --card:#1E0F33; --ink:#FFF4E2; --ink-2:#CDB8E8;
+  --tang:#FF6B1A; --pink:#FF3CAC; --acid:#FFD23F; --teal:#00D1B2; --violet:#8A4DFF;
+  --f-groovy:"Shrikhand","Cooper Black",Georgia,serif;
+  --f-pixel:"Silkscreen","Courier New",monospace;
+  --f-body:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+  color-scheme:dark;
+}
 *{box-sizing:border-box}
-html,body{height:100%;margin:0}
-body{background:var(--bg);color:var(--ink);font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;overflow:hidden;cursor:pointer;user-select:none;-webkit-user-select:none}
-canvas{position:fixed;inset:0;width:100%;height:100%;display:block}
-main{position:relative;z-index:1;padding:max(28px,6vw);display:flex;flex-direction:column;gap:14px;pointer-events:none;max-width:760px}
-h1{font-family:"Schibsted Grotesk","Helvetica Neue",Arial,sans-serif;font-weight:800;font-size:clamp(44px,9vw,108px);line-height:.92;letter-spacing:-.045em;margin:0}
-h1 span{color:var(--clay)}
-p{margin:0;font-size:15px;color:var(--ink-2);line-height:1.6}
-#count{font-variant-numeric:tabular-nums;color:var(--ink)}
-nav{display:flex;gap:18px;flex-wrap:wrap;margin-top:6px;pointer-events:auto}
-nav a{color:var(--ink);font-size:14px;text-decoration:none;border-bottom:1px solid var(--clay);padding-bottom:2px}
-nav a:hover{color:var(--clay)}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--void);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55;overflow-x:hidden}
+::selection{background:var(--pink);color:var(--void)}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--acid);outline-offset:3px}
+#plasma{position:fixed;inset:0;width:100vw;height:100vh;image-rendering:pixelated;image-rendering:crisp-edges;z-index:0;display:block}
+.scan{position:fixed;inset:0;z-index:1;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0 2px,transparent 2px 4px);mix-blend-mode:multiply}
+.wrap{position:relative;z-index:2;max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:18px 80px;display:flex;flex-direction:column;gap:56px}
+
+/* topo */
+.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.tag{font-family:var(--f-pixel);font-size:12px;letter-spacing:.06em;background:var(--void);border:2px solid var(--ink);padding:6px 10px;box-shadow:3px 3px 0 var(--pink)}
+.lang{display:inline-flex;border:2px solid var(--ink);background:var(--void);box-shadow:3px 3px 0 var(--acid)}
+.lang button{font-family:var(--f-pixel);font-size:13px;border:0;background:transparent;color:var(--ink);padding:7px 12px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--acid);color:var(--void)}
+
+/* hero */
+.hero{display:flex;flex-direction:column;gap:18px;padding-top:4vh}
+.hello{font-family:var(--f-pixel);font-size:clamp(13px,1.6vw,16px);color:var(--acid);background:var(--void);padding:4px 8px;align-self:flex-start}
+h1{margin:0;font-family:var(--f-groovy);font-weight:400;font-size:clamp(64px,15vw,190px);line-height:.86;letter-spacing:-.01em;color:var(--acid);
+  text-shadow:4px 4px 0 var(--tang),8px 8px 0 var(--pink),12px 12px 0 var(--violet),16px 16px 0 var(--void);filter:url(#melt);user-select:none}
+h1 span{display:block}
+h1 span:last-child{color:var(--ink);margin-left:.35em}
+.role{font-family:var(--f-pixel);font-size:clamp(18px,3vw,30px);line-height:1.2;background:var(--void);border:3px solid var(--ink);padding:12px 16px;align-self:flex-start;box-shadow:6px 6px 0 var(--teal);max-width:100%}
+.role b{color:var(--pink);font-weight:700}
+.role .cur{display:inline-block;width:.6em;height:1em;background:var(--acid);vertical-align:-.12em;margin-left:4px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.intro{max-width:60ch;font-size:clamp(17px,2vw,20px);background:var(--card);border:3px solid var(--ink);padding:18px 20px;box-shadow:6px 6px 0 var(--violet)}
+.trip{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-family:var(--f-pixel);font-size:12px;background:var(--void);border:2px solid var(--ink);padding:10px 14px;align-self:flex-start;box-shadow:3px 3px 0 var(--tang)}
+.trip input{accent-color:var(--pink);width:180px}
+
+/* seções */
+section{display:flex;flex-direction:column;gap:22px}
+h2{margin:0;font-family:var(--f-groovy);font-weight:400;font-size:clamp(38px,6vw,64px);line-height:1;color:var(--ink);text-shadow:3px 3px 0 var(--pink),6px 6px 0 var(--void);text-wrap:balance}
+.kicker{font-family:var(--f-pixel);font-size:12px;letter-spacing:.08em;color:var(--void);background:var(--acid);padding:4px 8px;align-self:flex-start}
+
+/* números */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:16px}
+.stat{background:var(--card);border:3px solid var(--ink);padding:16px;display:flex;flex-direction:column;gap:4px;transition:transform .15s}
+.stat:nth-child(4n+1){box-shadow:5px 5px 0 var(--tang)}.stat:nth-child(4n+2){box-shadow:5px 5px 0 var(--pink)}.stat:nth-child(4n+3){box-shadow:5px 5px 0 var(--teal)}.stat:nth-child(4n+4){box-shadow:5px 5px 0 var(--acid)}
+.stat b{font-family:var(--f-pixel);font-size:clamp(28px,4vw,40px);line-height:1;color:var(--acid);font-variant-numeric:tabular-nums}
+.stat span{font-size:15px;color:var(--ink-2)}
+.stat:hover{transform:translate(-3px,-3px) rotate(-1deg)}
+
+/* trajetória */
+.jobs{display:flex;flex-direction:column;gap:22px}
+.job{position:relative;background:var(--card);border:3px solid var(--ink);padding:22px 24px;display:grid;grid-template-columns:180px minmax(0,1fr);gap:8px 28px;transition:transform .2s ease,box-shadow .2s ease}
+.job:nth-child(odd){box-shadow:7px 7px 0 var(--pink)}.job:nth-child(even){box-shadow:7px 7px 0 var(--teal)}
+.job:hover{transform:translate(-4px,-4px) rotate(-.4deg)}
+.job:nth-child(odd):hover{box-shadow:11px 11px 0 var(--pink)}.job:nth-child(even):hover{box-shadow:11px 11px 0 var(--teal)}
+.when{font-family:var(--f-pixel);font-size:12.5px;color:var(--acid);line-height:1.5}
+.where{font-family:var(--f-pixel);font-size:11px;color:var(--ink-2);margin-top:6px}
+.job h3{margin:0;font-family:var(--f-body);font-weight:800;font-size:clamp(22px,3vw,28px);letter-spacing:-.01em;line-height:1.1}
+.job h3 small{display:block;font-family:var(--f-pixel);font-weight:400;font-size:13px;color:var(--pink);margin-top:6px;letter-spacing:.02em}
+.job p{margin:8px 0 0;max-width:62ch}
+.job ul{margin:10px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+.job li{padding-left:22px;position:relative;font-size:16px;color:var(--ink-2)}
+.job li::before{content:"";position:absolute;left:0;top:.5em;width:10px;height:10px;background:var(--tang);box-shadow:3px 3px 0 var(--violet)}
+.stack{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.stack i{font-style:normal;font-family:var(--f-pixel);font-size:11px;border:2px solid var(--ink-2);padding:2px 7px;color:var(--ink)}
+@media (max-width:720px){.job{grid-template-columns:minmax(0,1fr)}}
+
+/* skills */
+.skills{display:flex;flex-wrap:wrap;gap:12px}
+.skill{font-family:var(--f-pixel);font-size:14px;padding:9px 14px;border:3px solid var(--void);color:var(--void);cursor:grab;user-select:none;transition:transform .2s cubic-bezier(.3,1.6,.5,1)}
+.skill:nth-child(5n+1){background:var(--acid)}.skill:nth-child(5n+2){background:var(--pink)}.skill:nth-child(5n+3){background:var(--teal)}.skill:nth-child(5n+4){background:var(--tang)}.skill:nth-child(5n+5){background:var(--violet);color:var(--ink)}
+.skill:hover{transform:rotate(-6deg) scale(1.12)}
+.skill:nth-child(even):hover{transform:rotate(6deg) scale(1.12)}
+
+/* estudo e contato */
+.duo{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px}
+.box{background:var(--card);border:3px solid var(--ink);padding:20px;box-shadow:6px 6px 0 var(--acid);display:flex;flex-direction:column;gap:12px;min-width:0}
+.box h3{margin:0;font-family:var(--f-pixel);font-size:16px;color:var(--acid)}
+.box ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px}
+.box li{font-size:16px}
+.box li b{display:block}
+.box li span{color:var(--ink-2);font-size:15px}
+.contact{display:flex;flex-wrap:wrap;gap:14px}
+.btn{font-family:var(--f-pixel);font-size:14px;text-decoration:none;background:var(--pink);color:var(--void);border:3px solid var(--ink);padding:12px 16px;box-shadow:5px 5px 0 var(--ink);transition:transform .1s,box-shadow .1s;display:inline-flex;align-items:center;gap:8px}
+.btn:nth-child(2){background:var(--teal)}.btn:nth-child(3){background:var(--acid)}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--ink)}
+.btn:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--ink)}
+.mail{font-family:var(--f-pixel);font-size:13px;color:var(--ink-2);user-select:all}
+footer{font-family:var(--f-pixel);font-size:11px;color:var(--ink);background:var(--void);border:2px solid var(--ink);padding:10px 14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer a{color:var(--acid)}
+@media (prefers-reduced-motion:reduce){.role .cur{animation:none}.job,.stat,.skill,.btn{transition:none}}
 </style>
 </head>
 <body>
-<canvas id="c" aria-hidden="true"></canvas>
-<main>
-  <h1>Página<br>em <span>obra.</span></h1>
-  <p>Toque em qualquer lugar para assentar um tijolo.<br>Tijolos assentados: <span id="count">0</span>. <span id="msg"></span></p>
-  <nav><a href="/resume/">currículo</a><a href="https://github.com/igornatanael">github</a></nav>
-</main>
+<canvas id="plasma" aria-hidden="true"></canvas>
+<div class="scan" aria-hidden="true"></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="melt" x="-10%" y="-20%" width="120%" height="160%">
+    <feTurbulence id="turb" type="fractalNoise" baseFrequency="0.008 0.03" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap id="disp" in="SourceGraphic" in2="n" scale="14" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
+
+<div class="wrap">
+  <div class="bar">
+    <span class="tag" data-i="loc"></span>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" id="bEn" aria-pressed="true">EN</button>
+      <button type="button" id="bPt" aria-pressed="false">PT</button>
+    </div>
+  </div>
+
+  <header class="hero">
+    <span class="hello" data-i="hello"></span>
+    <h1 aria-label="Igor Natanael"><span>Igor</span><span>Natanael</span></h1>
+    <p class="role" aria-live="polite"><span data-i="iam"></span> <b id="roleTxt"></b><span class="cur" aria-hidden="true"></span></p>
+    <p class="intro" data-i="intro"></p>
+    <label class="trip"><span data-i="trip"></span><input type="range" id="tripR" min="0" max="100" value="45"></label>
+  </header>
+
+  <section aria-labelledby="h-num">
+    <span class="kicker" data-i="numK"></span>
+    <h2 id="h-num" data-i="numH"></h2>
+    <div class="stats" id="stats"></div>
+  </section>
+
+  <section aria-labelledby="h-jobs">
+    <span class="kicker" data-i="jobsK"></span>
+    <h2 id="h-jobs" data-i="jobsH"></h2>
+    <div class="jobs" id="jobs"></div>
+  </section>
+
+  <section aria-labelledby="h-sk">
+    <span class="kicker" data-i="skK"></span>
+    <h2 id="h-sk" data-i="skH"></h2>
+    <div class="skills" id="skills"></div>
+  </section>
+
+  <section aria-labelledby="h-edu">
+    <span class="kicker" data-i="eduK"></span>
+    <h2 id="h-edu" data-i="eduH"></h2>
+    <div class="duo">
+      <div class="box"><h3 data-i="eduT"></h3><ul id="edu"></ul></div>
+      <div class="box"><h3 data-i="langT"></h3><ul id="langs"></ul></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-ct">
+    <span class="kicker" data-i="ctK"></span>
+    <h2 id="h-ct" data-i="ctH"></h2>
+    <div class="contact">
+      <a class="btn" href="https://www.linkedin.com/in/igornatanael" target="_blank" rel="noopener">LinkedIn ↗</a>
+      <a class="btn" href="https://github.com/igornatanael" target="_blank" rel="noopener">GitHub ↗</a>
+      <a class="btn" href="mailto:igornatanaelsousa@gmail.com" data-i="mailBtn"></a>
+    </div>
+    <span class="mail">igornatanaelsousa@gmail.com</span>
+  </section>
+
+  <footer><span data-i="foot"></span><span><a href="/obra/" data-i="brick"></a></span></footer>
+</div>
+
 <script>
-(()=>{
-const c=document.getElementById('c'),x=c.getContext('2d'),cnt=document.getElementById('count'),msg=document.getElementById('msg');
-const BW=46,BH=20,G=3;let W,H,dpr,cols,heights=null,bricks=[],n=0;
-const cs=getComputedStyle(document.documentElement),clay=cs.getPropertyValue('--clay').trim();
-const tones=[clay,'#C26A44','#A9502E','#BF7A55','#9C4A2A'];
-const lines=[[10,'Já dá um muro baixo.'],[40,'O mestre de obras aprovou.'],[100,'Cuidado com o orçamento.'],[200,'Isso já passou da taxa de ocupação.'],[400,'Pode parar. A casa é de verdade, em outro endereço.']];
-function size(){dpr=window.devicePixelRatio||1;W=innerWidth;H=innerHeight;c.width=W*dpr;c.height=H*dpr;x.setTransform(dpr,0,0,dpr,0,0);
-  cols=Math.ceil(W/(BW+G))+1;if(!heights||heights.length!==cols)heights=new Array(cols).fill(0);bricks.forEach(b=>{b.y=b.ty=H-(b.row+1)*(BH+G);});}
-function drop(px){const col=Math.max(0,Math.min(cols-1,Math.floor(px/(BW+G))));const row=heights[col]++;
-  const bx=col*(BW+G)+(row%2?-(BW+G)/2:0);
-  bricks.push({x:bx,y:-BH,vy:0,ty:H-(row+1)*(BH+G),row,col:tones[Math.random()*tones.length|0]});
-  n++;cnt.textContent=n;const l=lines.filter(q=>q[0]<=n).pop();msg.textContent=l?l[1]:'';}
-function frame(){x.clearRect(0,0,W,H);let moving=false;
-  for(const b of bricks){if(b.y<b.ty){b.vy+=1.4;b.y=Math.min(b.ty,b.y+b.vy);moving=true;}
-    x.fillStyle=b.col;x.beginPath();x.roundRect?x.roundRect(b.x,b.y,BW,BH,2):x.rect(b.x,b.y,BW,BH);x.fill();}
-  requestAnimationFrame(frame);}
+const T={
+en:{
+ loc:"PARAÍBA, BRAZIL · UTC−3",
+ hello:"> hello, world. I'm",
+ iam:"professional",
+ roles:["software whisperer","kubernetes tamer","platform plumber","bug exorcist","full-cycle engineer","yaml survivor","research-to-prod smuggler"],
+ intro:"Software engineer with 10+ years of turning \"it works on my machine\" into \"it works on 5,000 machines\". Platforms, infrastructure, distributed systems, a fintech now, and a soft spot for research. Based in Campina Grande, powered by coffee and cuscuz.",
+ trip:"TRIP INTENSITY",
+ numK:"CHAPTER 01", numH:"Numbers that sound made up",
+ stats:[["10+","years shipping software"],["5,000+","Kubernetes nodes kept alive"],["~20M","requests per minute, served"],["200+","engineers using what my teams built"]],
+ jobsK:"CHAPTER 02", jobsH:"The long strange trip",
+ jobs:[
+  {when:"Apr 2025 → now",where:"Brazil · remote",co:"Zippi",role:"Software Engineer",
+   p:"Joined a fast-growing fintech to do a bit of everything, on purpose.",
+   li:["Full-cycle engineer: backend, infrastructure and the app people actually tap","Ruby services carrying core financial workflows, where a bug costs real money","Brought the platform-nerd toolkit: performance, reliability, smaller cloud bills","Wandered into mobile and product work and didn't get lost"],stack:["Ruby","Infra","Mobile","Fintech"]},
+  {when:"Jul 2023 → Feb 2025",where:"Brazil",co:"VTEX",role:"Staff Software Engineer",
+   p:"Six and a half years at one of the biggest digital commerce platforms in Latin America. This was the last level.",
+   li:["Led platform and infrastructure bets that made 200+ engineers faster and the system calmer","Got Developer Experience, SRE and Product in the same room, on purpose","Trimmed cloud waste and made decisions with data instead of vibes","Preached observability until it stuck"],stack:["Platform eng.","DevEx","SRE","Cloud"]},
+  {when:"Feb 2021 → Jul 2023",where:"Brazil",co:"VTEX",role:"Software Engineering Manager",
+   p:"Two hats at once: the boring infrastructure that cannot fail, and the lab where things are allowed to.",
+   li:["Ran Developer Experience & Infrastructure Platform plus VTEX Lab, the R&D crew","Kept Kubernetes clusters with 5,000+ nodes and 10,000+ pods humming at ~20M requests per minute","Built CI/CD, service provisioning and a service catalog, so nobody had to ask for a server ever again","Mixed engineers, researchers and students from top universities, and turned research into things in production"],stack:["Kubernetes","CI/CD","R&D","Leadership"]},
+  {when:"Oct 2018 → Jan 2021",where:"Campina Grande",co:"VTEX",role:"Software Engineer II",
+   p:"Where I learned what \"distributed\" really means at 3 a.m.",
+   li:["Backend for VTEX Master Data, a high-performance distributed data platform","C#/.NET, AWS, Elasticsearch and Redis, tuned until they behaved","Led teams together with UFCG to make the system tougher","Built tools that made incidents shorter and less mysterious"],stack:["C# .NET","AWS","Elasticsearch","Redis"]},
+  {when:"Nov 2015 → Oct 2018",where:"Campina Grande",co:"Distributed Systems Lab · UFCG",role:"Cloud Software Engineer → Tech Lead",
+   p:"Walked in as an intern, walked out as tech lead. Cloud before it was cool in the office.",
+   li:["Research projects with European institutions (EU–Brazil) and Hewlett-Packard","Contributed to the OpenStack ecosystem with HP: python-hpOneView, OneView-Monasca","Big data and cloud-native systems with Kubernetes, OpenStack, Spark and Hadoop","QoS, privacy and performance for very distributed things"],stack:["OpenStack","Spark","Hadoop","Python"]},
+  {when:"Jul → Aug 2017",where:"Valencia, Spain",co:"Universitat Politècnica de València",role:"Research Development Intern",
+   p:"Two months of paella and integration work for the EUBra-BIGSEA project, connecting services built at UFCG and UPV.",
+   li:["Python, Flask, Spark, Hadoop, Mesos and Marathon on OpenNebula"],stack:["Python","Mesos","Spain"]},
+  {when:"Jul 2014 → Jul 2015",where:"Campina Grande",co:"UFCG",role:"Undergraduate Research Intern",
+   p:"Formal methods and Design by Contract: catching code that lies about its own contract.",
+   li:["Helped build JMLOk 2.0 for Java/JML and ContractOk for C#/CodeContracts"],stack:["Java","C#","Formal methods"]}
+ ],
+ skK:"CHAPTER 03", skH:"Stuff in the backpack",
+ skills:["Python","C# .NET","Ruby","Linux","Kubernetes","Cloud Native","Elasticsearch","SQL / NoSQL","CI/CD","Platform engineering","Observability","AWS","OpenStack","Spark","AI","Team leadership"],
+ eduK:"CHAPTER 04", eduH:"School, still on",
+ eduT:"EDUCATION", langT:"LANGUAGES",
+ edu:[["Postgraduate in Artificial Intelligence","FIAP Pós Tech · 2026, in progress"],["BSc in Computer Science","UFCG · 2013–2017"],["Mining Technician + high school","IFPB · 2009–2012 · yes, rocks came first"]],
+ langs:[["Portuguese","native"],["English","full professional"],["Spanish","limited, but ordering food is solved"]],
+ ctK:"CHAPTER 05", ctH:"Say hi", mailBtn:"Email ↗",
+ foot:"© Igor Natanael · made with pixels and a little too much color", brick:"lay a brick →"
+},
+pt:{
+ loc:"PARAÍBA, BRASIL · UTC−3",
+ hello:"> olá, mundo. eu sou",
+ iam:"profissão:",
+ roles:["encantador de software","domador de kubernetes","encanador de plataforma","exorcista de bugs","engenheiro full-cycle","sobrevivente de yaml","contrabandista de pesquisa pra produção"],
+ intro:"Engenheiro de software com mais de 10 anos transformando \"funciona na minha máquina\" em \"funciona em 5.000 máquinas\". Plataforma, infraestrutura, sistemas distribuídos, agora uma fintech, e um fraco por pesquisa. Morando em Campina Grande, movido a café e cuscuz.",
+ trip:"INTENSIDADE DA VIAGEM",
+ numK:"CAPÍTULO 01", numH:"Números que parecem inventados",
+ stats:[["10+","anos entregando software"],["5.000+","nós de Kubernetes mantidos de pé"],["~20M","requisições por minuto, servidas"],["200+","engenheiros usando o que meus times construíram"]],
+ jobsK:"CAPÍTULO 02", jobsH:"A longa e estranha viagem",
+ jobs:[
+  {when:"abr 2025 → hoje",where:"Brasil · remoto",co:"Zippi",role:"Software Engineer",
+   p:"Entrei numa fintech em crescimento acelerado para fazer um pouco de tudo, de propósito.",
+   li:["Engenheiro full-cycle: backend, infraestrutura e o app que as pessoas realmente usam","Serviços em Ruby segurando fluxos financeiros centrais, onde bug custa dinheiro de verdade","Trouxe a caixa de ferramentas de plataforma: performance, confiabilidade e conta de nuvem menor","Me meti em mobile e produto e não me perdi"],stack:["Ruby","Infra","Mobile","Fintech"]},
+  {when:"jul 2023 → fev 2025",where:"Brasil",co:"VTEX",role:"Staff Software Engineer",
+   p:"Seis anos e meio numa das maiores plataformas de comércio digital da América Latina. Esta foi a última fase.",
+   li:["Liderei apostas de plataforma e infraestrutura que deixaram mais de 200 engenheiros mais rápidos e o sistema mais tranquilo","Coloquei Developer Experience, SRE e Produto na mesma sala, de propósito","Cortei desperdício de nuvem e passei a decidir com dados, não com feeling","Preguei observabilidade até pegar"],stack:["Platform eng.","DevEx","SRE","Cloud"]},
+  {when:"fev 2021 → jul 2023",where:"Brasil",co:"VTEX",role:"Software Engineering Manager",
+   p:"Dois chapéus ao mesmo tempo: a infraestrutura chata que não pode falhar e o laboratório onde falhar é permitido.",
+   li:["Liderei Developer Experience & Infrastructure Platform e o VTEX Lab, o time de P&D","Mantive clusters de Kubernetes com mais de 5.000 nós e 10.000 pods rodando a ~20M de requisições por minuto","Construí CI/CD, provisionamento de serviços e catálogo de serviços, para ninguém mais precisar pedir servidor","Juntei engenheiros, pesquisadores e estudantes das melhores universidades e transformei pesquisa em coisa rodando em produção"],stack:["Kubernetes","CI/CD","P&D","Liderança"]},
+  {when:"out 2018 → jan 2021",where:"Campina Grande",co:"VTEX",role:"Software Engineer II",
+   p:"Onde aprendi o que \"distribuído\" significa às 3 da manhã.",
+   li:["Backend do VTEX Master Data, uma plataforma de dados distribuída de alta performance","C#/.NET, AWS, Elasticsearch e Redis, ajustados até se comportarem","Liderei times junto com a UFCG para deixar o sistema mais resistente","Criei ferramentas que deixaram os incidentes mais curtos e menos misteriosos"],stack:["C# .NET","AWS","Elasticsearch","Redis"]},
+  {when:"nov 2015 → out 2018",where:"Campina Grande",co:"Laboratório de Sistemas Distribuídos · UFCG",role:"Cloud Software Engineer → Tech Lead",
+   p:"Entrei como estagiário e saí como tech lead. Nuvem antes de virar moda no escritório.",
+   li:["Projetos de pesquisa com instituições europeias (Europa–Brasil) e a Hewlett-Packard","Contribuições ao ecossistema OpenStack com a HP: python-hpOneView, OneView-Monasca","Big data e sistemas cloud-native com Kubernetes, OpenStack, Spark e Hadoop","QoS, privacidade e performance para coisas muito distribuídas"],stack:["OpenStack","Spark","Hadoop","Python"]},
+  {when:"jul → ago 2017",where:"Valência, Espanha",co:"Universitat Politècnica de València",role:"Estagiário de pesquisa e desenvolvimento",
+   p:"Dois meses de paella e integração para o projeto EUBra-BIGSEA, ligando serviços feitos na UFCG e na UPV.",
+   li:["Python, Flask, Spark, Hadoop, Mesos e Marathon sobre OpenNebula"],stack:["Python","Mesos","Espanha"]},
+  {when:"jul 2014 → jul 2015",where:"Campina Grande",co:"UFCG",role:"Iniciação científica",
+   p:"Métodos formais e Design by Contract: pegando código que mente sobre o próprio contrato.",
+   li:["Ajudei a construir o JMLOk 2.0 para Java/JML e o ContractOk para C#/CodeContracts"],stack:["Java","C#","Métodos formais"]}
+ ],
+ skK:"CAPÍTULO 03", skH:"O que tem na mochila",
+ skills:["Python","C# .NET","Ruby","Linux","Kubernetes","Cloud Native","Elasticsearch","SQL / NoSQL","CI/CD","Engenharia de plataforma","Observabilidade","AWS","OpenStack","Spark","IA","Liderança de times"],
+ eduK:"CAPÍTULO 04", eduH:"Ainda estudando",
+ eduT:"FORMAÇÃO", langT:"IDIOMAS",
+ edu:[["Pós-graduação em Inteligência Artificial","FIAP Pós Tech · 2026, em andamento"],["Bacharelado em Ciência da Computação","UFCG · 2013–2017"],["Técnico em Mineração integrado ao ensino médio","IFPB · 2009–2012 · sim, as pedras vieram primeiro"]],
+ langs:[["Português","nativo"],["Inglês","profissional completo"],["Espanhol","limitado, mas pedir comida está resolvido"]],
+ ctK:"CAPÍTULO 05", ctH:"Diga oi", mailBtn:"E-mail ↗",
+ foot:"© Igor Natanael · feito com pixels e cor demais", brick:"assente um tijolo →"
+}};
+let L='en';
+try{const s=localStorage.getItem('lang');if(s==='pt'||s==='en')L=s;}catch(e){}
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function render(){
+  const D=T[L];document.documentElement.lang=L==='pt'?'pt-BR':'en';
+  document.querySelectorAll('[data-i]').forEach(e=>{const v=D[e.dataset.i];if(typeof v==='string')e.textContent=v;});
+  document.getElementById('bEn').setAttribute('aria-pressed',L==='en');document.getElementById('bPt').setAttribute('aria-pressed',L==='pt');
+  document.getElementById('stats').innerHTML=D.stats.map(([n,t])=>`<div class="stat"><b>${esc(n)}</b><span>${esc(t)}</span></div>`).join('');
+  document.getElementById('jobs').innerHTML=D.jobs.map(j=>`<article class="job"><div><div class="when">${esc(j.when)}</div><div class="where">${esc(j.where)}</div></div><div><h3>${esc(j.co)}<small>${esc(j.role)}</small></h3><p>${esc(j.p)}</p><ul>${j.li.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><div class="stack">${j.stack.map(x=>`<i>${esc(x)}</i>`).join('')}</div></div></article>`).join('');
+  document.getElementById('skills').innerHTML=D.skills.map(s=>`<span class="skill">${esc(s)}</span>`).join('');
+  document.getElementById('edu').innerHTML=D.edu.map(([a,b])=>`<li><b>${esc(a)}</b><span>${esc(b)}</span></li>`).join('');
+  document.getElementById('langs').innerHTML=D.langs.map(([a,b])=>`<li><b>${esc(a)}</b><span>${esc(b)}</span></li>`).join('');
+  roleI=0;typeRole(true);
+}
+function setLang(l){L=l;try{localStorage.setItem('lang',l);}catch(e){}render();}
+document.getElementById('bEn').onclick=()=>setLang('en');
+document.getElementById('bPt').onclick=()=>setLang('pt');
+
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* papel que se digita sozinho */
+let roleI=0,roleTimer=null;const roleEl=document.getElementById('roleTxt');
+function typeRole(reset){
+  clearTimeout(roleTimer);const list=T[L].roles,word=list[roleI%list.length];
+  if(reduce){roleEl.textContent=word;roleTimer=setTimeout(()=>{roleI++;typeRole();},2600);return;}
+  let k=reset?word.length:0;roleEl.textContent=reset?word:'';
+  const step=()=>{if(k<word.length){roleEl.textContent=word.slice(0,++k);roleTimer=setTimeout(step,55);}else roleTimer=setTimeout(back,1900);};
+  const back=()=>{if(k>0){roleEl.textContent=word.slice(0,--k);roleTimer=setTimeout(back,28);}else{roleI++;typeRole();}};
+  reset?roleTimer=setTimeout(back,1900):step();
+}
+
+/* plasma pixelado: poucos pixels, paleta setentista, o mouse entorta */
+const cv=document.getElementById('plasma'),cx=cv.getContext('2d');
+const PAL=[[20,8,31],[138,77,255],[255,60,172],[255,107,26],[255,210,63],[0,209,178],[138,77,255],[20,8,31]];
+let W,H,img,mx=.5,my=.4,trip=.45,t0=performance.now();
+function size(){const s=Math.max(innerWidth,innerHeight)>900?7:6;W=Math.ceil(innerWidth/s);H=Math.ceil(innerHeight/s);cv.width=W;cv.height=H;img=cx.createImageData(W,H);}
 addEventListener('resize',size);size();
-addEventListener('pointerdown',e=>{if(e.target.closest('a'))return;drop(e.clientX);});
-for(let i=0;i<cols;i++)drop(i*(BW+G)+1);n=0;cnt.textContent=0;msg.textContent='';
-frame();
-})();
+addEventListener('pointermove',e=>{mx=e.clientX/innerWidth;my=e.clientY/innerHeight;});
+const tripR=document.getElementById('tripR');tripR.oninput=()=>{trip=tripR.value/100;};
+const turb=document.getElementById('turb'),disp=document.getElementById('disp');
+function frame(now){
+  const t=(reduce?0:(now-t0))/1000*(0.25+trip*0.9),d=img.data,amp=0.6+trip*2.2;
+  for(let y=0;y<H;y++){const v=y/H;for(let x=0;x<W;x++){const u=x/W;
+    const dx=u-mx,dy=v-my,r=Math.sqrt(dx*dx+dy*dy);
+    const wu=u+Math.sin(v*6+t*1.3)*0.06*amp+Math.sin(r*14-t*2)*0.03*amp,wv=v+Math.cos(u*5-t)*0.08*amp;
+    let s=Math.sin(wu*7+t)+Math.sin(wv*9-t*1.1)+Math.sin((wu+wv)*6+t*.7)+Math.sin(r*18-t*2.4)*0.8;
+    s=(s+3.8)/7.6;s=(s*1.6+t*0.05)%1;
+    const q=Math.floor(s*(PAL.length-1)),c=PAL[q],i=(y*W+x)*4;
+    d[i]=c[0];d[i+1]=c[1];d[i+2]=c[2];d[i+3]=255;}}
+  cx.putImageData(img,0,0);
+  if(!reduce){turb.setAttribute('baseFrequency',`${0.006+Math.sin(t*.6)*0.002} ${0.025+Math.sin(t*.9)*0.012}`);}
+  disp.setAttribute('scale',String(4+trip*34));
+  if(!reduce)requestAnimationFrame(frame);
+}
+render();requestAnimationFrame(frame);
+if(reduce){tripR.addEventListener('input',()=>requestAnimationFrame(frame));}
 </script>
 </body>
 </html>

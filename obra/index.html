@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="pt-BR">
+<head><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="icon" href="/favicon.png" type="image/png"><link rel="apple-touch-icon" href="/favicon.png">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Igor Natanael</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{--bg:#F4EFE8;--ink:#22261F;--ink-2:#646457;--clay:#B6542F;--mortar:#E2D9CC}
+@media (prefers-color-scheme:dark){:root{--bg:#171511;--ink:#EDE7DC;--ink-2:#A7A091;--clay:#E07E55;--mortar:#353027}}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;overflow:hidden;cursor:pointer;user-select:none;-webkit-user-select:none}
+canvas{position:fixed;inset:0;width:100%;height:100%;display:block}
+main{position:relative;z-index:1;padding:max(28px,6vw);display:flex;flex-direction:column;gap:14px;pointer-events:none;max-width:760px}
+h1{font-family:"Schibsted Grotesk","Helvetica Neue",Arial,sans-serif;font-weight:800;font-size:clamp(44px,9vw,108px);line-height:.92;letter-spacing:-.045em;margin:0}
+h1 span{color:var(--clay)}
+p{margin:0;font-size:15px;color:var(--ink-2);line-height:1.6}
+#count{font-variant-numeric:tabular-nums;color:var(--ink)}
+nav{display:flex;gap:18px;flex-wrap:wrap;margin-top:6px;pointer-events:auto}
+nav a{color:var(--ink);font-size:14px;text-decoration:none;border-bottom:1px solid var(--clay);padding-bottom:2px}
+nav a:hover{color:var(--clay)}
+</style>
+</head>
+<body>
+<canvas id="c" aria-hidden="true"></canvas>
+<main>
+  <h1>Página<br>em <span>obra.</span></h1>
+  <p>Toque em qualquer lugar para assentar um tijolo.<br>Tijolos assentados: <span id="count">0</span>. <span id="msg"></span></p>
+  <nav><a href="/">voltar</a><a href="/resume/">currículo antigo</a><a href="https://github.com/igornatanael">github</a></nav>
+</main>
+<script>
+(()=>{
+const c=document.getElementById('c'),x=c.getContext('2d'),cnt=document.getElementById('count'),msg=document.getElementById('msg');
+const BW=46,BH=20,G=3;let W,H,dpr,cols,heights=null,bricks=[],n=0;
+const cs=getComputedStyle(document.documentElement),clay=cs.getPropertyValue('--clay').trim();
+const tones=[clay,'#C26A44','#A9502E','#BF7A55','#9C4A2A'];
+const lines=[[10,'Já dá um muro baixo.'],[40,'O mestre de obras aprovou.'],[100,'Cuidado com o orçamento.'],[200,'Isso já passou da taxa de ocupação.'],[400,'Pode parar. A casa é de verdade, em outro endereço.']];
+function size(){dpr=window.devicePixelRatio||1;W=innerWidth;H=innerHeight;c.width=W*dpr;c.height=H*dpr;x.setTransform(dpr,0,0,dpr,0,0);
+  cols=Math.ceil(W/(BW+G))+1;if(!heights||heights.length!==cols)heights=new Array(cols).fill(0);bricks.forEach(b=>{b.y=b.ty=H-(b.row+1)*(BH+G);});}
+function drop(px){const col=Math.max(0,Math.min(cols-1,Math.floor(px/(BW+G))));const row=heights[col]++;
+  const bx=col*(BW+G)+(row%2?-(BW+G)/2:0);
+  bricks.push({x:bx,y:-BH,vy:0,ty:H-(row+1)*(BH+G),row,col:tones[Math.random()*tones.length|0]});
+  n++;cnt.textContent=n;const l=lines.filter(q=>q[0]<=n).pop();msg.textContent=l?l[1]:'';}
+function frame(){x.clearRect(0,0,W,H);let moving=false;
+  for(const b of bricks){if(b.y<b.ty){b.vy+=1.4;b.y=Math.min(b.ty,b.y+b.vy);moving=true;}
+    x.fillStyle=b.col;x.beginPath();x.roundRect?x.roundRect(b.x,b.y,BW,BH,2):x.rect(b.x,b.y,BW,BH);x.fill();}
+  requestAnimationFrame(frame);}
+addEventListener('resize',size);size();
+addEventListener('pointerdown',e=>{if(e.target.closest('a'))return;drop(e.clientX);});
+for(let i=0;i<cols;i++)drop(i*(BW+G)+1);n=0;cnt.textContent=0;msg.textContent='';
+frame();
+})();
+</script>
+</body>
+</html>
